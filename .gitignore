@@ -2,3 +2,4 @@
 .python-version
 /pyproject.toml
 /uv.lock
+**/.DS_Store
