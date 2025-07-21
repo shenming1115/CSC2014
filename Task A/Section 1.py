@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+import os
 
 def is_night_frame(frame, brightness_threshold=80):
     """Determine if a frame represents nighttime based on brightness threshold"""
@@ -29,7 +29,7 @@ def process_video(input_path, output_path, brightness_increase=50, brightness_th
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps    = int(cap.get(cv2.CAP_PROP_FPS))
 
-    out = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
+    out = cv2.VideoWriter(output_path, cv2.VideoWriter.fourcc(*'mp4v'), fps, (width, height))
 
     total_before = 0
     total_after = 0
@@ -63,27 +63,20 @@ def process_video(input_path, output_path, brightness_increase=50, brightness_th
     return avg_before, avg_after
 
 # ==== Main Processing Section ====
-video_files = ["Recorded Videos (4)/alley.mp4", "Recorded Videos (4)/office.mp4", "Recorded Videos (4)/singapore.mp4", "Recorded Videos (4)/traffic.mp4"]
+video_files = [
+    r"c:\Users\User\Desktop\CS Y2S1\CSC2014_FinalAssignment\CSC2014\Recorded Videos (4)\alley.mp4",
+    r"c:\Users\User\Desktop\CS Y2S1\CSC2014_FinalAssignment\CSC2014\Recorded Videos (4)\office.mp4",
+    r"c:\Users\User\Desktop\CS Y2S1\CSC2014_FinalAssignment\CSC2014\Recorded Videos (4)\singapore.mp4",
+    r"c:\Users\User\Desktop\CS Y2S1\CSC2014_FinalAssignment\CSC2014\Recorded Videos (4)\traffic.mp4"
+]
 brightness_before = []
 brightness_after = []
 
 for video in video_files:
     print(f"\n🎬 Processing video: {video}")
-    before, after = process_video(video, f"processed_{video}")
+    base = os.path.splitext(os.path.basename(video))[0]
+    output_path = os.path.join("Output", "Task A", "Section 1", f"brightness_{base}.mp4")
+    before, after = process_video(video, output_path)
     brightness_before.append(before if before else 0)
     brightness_after.append(after if after else 0)
 
-# ==== Generate Brightness Comparison Chart ====
-x = np.arange(len(video_files))
-width = 0.35
-
-plt.figure(figsize=(10,6))
-plt.bar(x - width/2, brightness_before, width, label='Before Enhancement', color='gray')
-plt.bar(x + width/2, brightness_after, width, label='After Enhancement', color='orange')
-plt.xticks(x, video_files)
-plt.ylabel("Average Brightness")
-plt.title("Video Brightness: Before vs After Enhancement")
-plt.legend()
-plt.tight_layout()
-plt.savefig("Output/Task A/Section 1/brightness_comparison_chart.png")
-plt.show()
