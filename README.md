@@ -6,6 +6,7 @@ This project contains solutions for various digital image processing tasks focus
 
 
 
+```
 CSC2014/
 ├── Task A/
 │   ├── Section 1.py          # Day/Night detection and brightness adjustment
@@ -26,6 +27,7 @@ CSC2014/
 ├── Dependency/
 │   └── face_detector.xml     # Haar cascade classifier for face detection
 └── README.md
+```
 
 
 
@@ -123,5 +125,6 @@ Combines processed videos and prepares them for final watermarking and output.
 
 *Usage*:
 
-bash
+```
 python "Task B/Task_B.py"
+```
