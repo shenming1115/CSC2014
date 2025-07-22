@@ -58,44 +58,29 @@ CSC2014/
 - Intelligent tracker management with confidence scoring
 - Real-time processing with progress monitoring
 
-### Section 3: TBC
 
-*To be completed*
+### Section 3: Final Output Assembly
 
-### Section 4: TBC
+*Combines processed videos and prepares them for final watermarking and output.*
 
-*To be completed*
+### Section 4: Watermarking & Final Enhancement
 
-## Dependencies
+**Objective**: Overlay a watermark on all output videos and apply final brightness enhancement for improved visual quality.
 
-- OpenCV (opencv-python, opencv-contrib-python)
-- NumPy
-- Python 3.7+
+**Features**:
 
-## Usage
+- Automatic resizing of watermark images to match video resolution
+- Adjustable watermark transparency (alpha blending)
+- Brightness and contrast enhancement for all frames
+- Appends a custom ending video to each output
 
-### Running Section 1 (Day/Night Detection):
+**Technical Highlights**:
 
-```bash
-python "Task A/Section 1.py"
-```
+- Uses OpenCV's `addWeighted` for watermark blending
+- Frame-by-frame brightness adjustment using `convertScaleAbs`
+- Supports batch processing of multiple videos
 
-### Running Section 2 (Face Blurring):
+**Output**:
 
-```bash
-python "Task A/Section 2.py"
-```
+- Watermarked and enhanced videos saved in `Output/Task A/Final_Output_Videos/` with prefix `watermarked_`
 
-## Input/Output
-
-- **Input**: Place video files in `Recorded Videos (4)/` directory
-- **Output**:
-  - Section 1: Brightness analysis charts in `Output/Task A/Section 1/`
-  - Section 2: Blurred videos with prefix "blurred_" in `Output/Task A/Section 2/`
-
-## Notes
-
-- Face cascade classifier (`face_detector.xml`) must be present in `Dependency/` folder
-- Output directories are created automatically
-- Progress is displayed every 100 processed frames
-- Supports various video codecs with automatic format detection
