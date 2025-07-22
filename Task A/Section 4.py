@@ -9,7 +9,7 @@ input_folder = "Output/Task A/Section 3/"
 ending_video = "Recorded Videos (4)/Watermark & Ending/endscreen.mp4"
 img1_path = "Recorded Videos (4)/Watermark & Ending/watermark1.png"
 img2_path = "Recorded Videos (4)/Watermark & Ending/watermark2.png"
-output_folder = "Output/Task A/Section 4/"
+output_folder = "Output/Task A/Final_Output_Videos/"
 
 # === Load watermarks ===
 img1 = cv2.imread(img1_path)
