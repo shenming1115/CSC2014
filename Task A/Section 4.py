@@ -5,11 +5,14 @@ print("OpenCV version:", cv2.__version__)
 print("Current working directory:", os.getcwd())
 
 # === Paths ===
-input_folder = "Output/Task A/Section 3/"
-ending_video = "Recorded Videos (4)/Watermark & Ending/endscreen.mp4"
-img1_path = "Recorded Videos (4)/Watermark & Ending/watermark1.png"
-img2_path = "Recorded Videos (4)/Watermark & Ending/watermark2.png"
-output_folder = "Output/Task A/Final_Output_Videos/"
+
+# Get absolute path to current script directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
+input_folder = os.path.join(base_dir, "..", "Output", "Task A", "Section 3")
+ending_video = os.path.join(base_dir, "..", "Recorded Videos (4)", "Watermark & Ending", "endscreen.mp4")
+img1_path = os.path.join(base_dir, "..", "Recorded Videos (4)", "Watermark & Ending", "watermark1.png")
+img2_path = os.path.join(base_dir, "..", "Recorded Videos (4)", "Watermark & Ending", "watermark2.png")
+output_folder = os.path.join(base_dir, "..", "Output", "Task A", "Final_Output_Videos")
 
 # === Load watermarks ===
 img1 = cv2.imread(img1_path)
@@ -22,13 +25,23 @@ else:
     print(f"Watermark2 loaded: {img2.shape}")
 
 def watermarking(frame, counter):
+    # =============================
+    # Applies a watermark to a video frame and increases its brightness.
+    # To prevent watermark background from being too dark:
+    # - Uses img1 for the first 100 frames, then switches to img2.
+    # - Brightens the frame using OpenCV's convertScaleAbs (alpha=1.1, beta=10).
+    # - Blends the watermark with low alpha (0.05) for minimal impact.
+    # Returns the processed frame.
+    # =============================
     try:
         if counter < 100:
             watermark = img1
         else:
             watermark = img2
-        alpha = 0.3  
-        result = cv2.addWeighted(frame, 1-alpha, watermark, alpha, 0)
+        # Increase brightness
+        bright_frame = cv2.convertScaleAbs(frame, alpha=1.1, beta=10)  # alpha: contrast, beta: brightness
+        alpha = 0.05  # Make watermark even lighter
+        result = cv2.addWeighted(bright_frame, 1-alpha, watermark, alpha, 0)
         return result
         
     except Exception as e:
@@ -36,6 +49,14 @@ def watermarking(frame, counter):
         return frame
 
 def process_video(input_path, output_path):
+    # =============================
+    # Processes a single video file:
+    # - Loads the input video and resizes frames to 1280x720 if needed.
+    # - Resizes watermark images to match video resolution.
+    # - Applies watermarking and brightness enhancement to each frame.
+    # - Writes processed frames to the output video file.
+    # - Appends a custom ending video to the output.
+    # =============================
     global img1, img2
     vid = cv2.VideoCapture(input_path)
     if not vid.isOpened():
@@ -93,6 +114,13 @@ def process_video(input_path, output_path):
 
 # === Main Execution ===
 def main():
+    # =============================
+    # Main execution function:
+    # - Checks for input and output folders, creates output folder if missing.
+    # - Finds all video files in the input folder.
+    # - Processes each video using process_video().
+    # - Prints progress and completion messages.
+    # =============================
     print("Starting main function...")
     
     if not os.path.exists(input_folder):
