@@ -4,7 +4,7 @@ import os
 
 # Blur all the faces (camera facing) that appear in a video.
 
-VIDEO_FOLDER = "Recorded Videos (4)/"
+VIDEO_FOLDER = "Output/Task A/Section 1/"
 OUTPUT_FOLDER = "Output/Task A/Section 2/"
 FACE_CASCADE_PATH = "Dependency/face_detector.xml"
 
