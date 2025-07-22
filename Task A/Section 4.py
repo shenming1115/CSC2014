@@ -39,9 +39,18 @@ def watermarking(frame, counter):
         else:
             watermark = img2
         # Increase brightness
-        bright_frame = cv2.convertScaleAbs(frame, alpha=1.1, beta=10)  # alpha: contrast, beta: brightness
-        alpha = 0.05  # Make watermark even lighter
-        result = cv2.addWeighted(bright_frame, 1-alpha, watermark, alpha, 0)
+        bright_frame = cv2.convertScaleAbs(frame, alpha=1.08, beta=8)  # alpha: contrast, beta: brightness (more natural)
+        # If watermark has alpha channel, blend only non-transparent parts
+        if watermark.shape[2] == 4:
+            overlay = bright_frame.copy()
+            wm_rgb = watermark[:, :, :3]
+            wm_alpha = watermark[:, :, 3] / 255.0
+            for c in range(3):
+                overlay[:, :, c] = (wm_alpha * wm_rgb[:, :, c] + (1 - wm_alpha) * bright_frame[:, :, c]).astype('uint8')
+            result = overlay
+        else:
+            alpha = 0.2  # Make watermark more visible
+            result = cv2.addWeighted(bright_frame, 1-alpha, watermark, alpha, 0)
         return result
         
     except Exception as e:
